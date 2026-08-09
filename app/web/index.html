@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BdSLW60 — live sign inference</title>
+  <link rel="stylesheet" href="style.css" />
+  <!-- ONNX Runtime Web (wasm backend) — sets global `ort`. -->
+  <script src="https://cdn.jsdelivr.net/npm/onnxruntime-web@1.19.2/dist/ort.min.js"></script>
+  <!-- Verbatim normalize port (classic script -> window.normalizeFrame). -->
+  <script src="normalize.js"></script>
+  <!-- Segment/mirror/resample ports (window.dominantLabel/buildFeatures/resample). -->
+  <script src="pipeline.js"></script>
+</head>
+<body>
+  <header>
+    <h1>BdSLW60 live sign inference</h1>
+    <p class="sub">camera → MediaPipe Tasks → normalize → ONNX Runtime Web</p>
+  </header>
+
+  <div id="status" class="status">initializing…</div>
+
+  <div id="fallback" class="fallback hidden">
+    <p id="fallback-msg"></p>
+    <label class="filebtn">
+      load a video file
+      <input type="file" id="fileInput" accept="video/*" />
+    </label>
+  </div>
+
+  <main>
+    <div class="stage">
+      <video id="video" playsinline muted></video>
+      <canvas id="overlay"></canvas>
+      <div id="fps" class="fps">-- fps</div>
+      <div id="recstate" class="recstate idle"><span class="dot"></span><span id="reclabel">idle</span></div>
+    </div>
+
+    <aside class="panel">
+      <h2>Top-3</h2>
+      <ol id="preds" class="preds">
+        <li class="pred"><span class="label">—</span><span class="conf">0%</span></li>
+        <li class="pred"><span class="label">—</span><span class="conf">0%</span></li>
+        <li class="pred"><span class="label">—</span><span class="conf">0%</span></li>
+      </ol>
+      <div class="meta">
+        <div>captured: <span id="buffill">0</span> frames</div>
+        <div>signs: <span id="infcount">0</span></div>
+      </div>
+      <p class="hint">Sign with ≥1 hand visible; pause (drop hands) to end a sign and trigger inference.</p>
+    </aside>
+  </main>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>
