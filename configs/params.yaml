@@ -1,0 +1,57 @@
+# All hyperparameters for Spec 03 (baseline model + training). No magic numbers
+# are allowed in code — everything the pipeline needs lives here.
+
+seed: 1337
+
+data:
+  landmarks_dir: data/landmarks
+  vocabulary: data/vocabulary.json
+  min_hand_presence_rate: 0.3   # drop below this from train/val only; keep all heldout
+
+features:
+  n_frames: 48
+  coord_dim: 100                # raw normalized coords per frame (incl. 2 presence flags)
+  n_coord_channels: 98          # channels 0..97 are (x,y) coords; 98,99 are presence flags
+  input_dim: 200                # coords (100) concatenated with first-diff (100)
+
+augment:                        # train split only; each applied independently with prob
+  prob: 0.5
+  time_shift: 3                 # frames, +/-
+  noise_sigma: 0.01
+  scale_min: 0.95
+  scale_max: 1.05
+  rotation_deg: 10              # +/- degrees in xy plane
+
+model:
+  input_dim: 200
+  hidden: 256                   # per direction
+  num_layers: 2
+  dropout: 0.3
+  num_classes: 60
+
+train:
+  batch_size: 64
+  max_epochs: 100
+  lr: 1.0e-3
+  lr_min: 1.0e-5
+  weight_decay: 0.0
+  label_smoothing: 0.1
+  grad_clip: 1.0
+  patience: 15                  # early stop on val top-1
+  num_workers: 0                # 0 keeps augmentation RNG deterministic for reproducibility
+  experiment: bdslw60-baseline
+
+eval:
+  topk: 5
+  confused_pairs: 10
+
+onnx:
+  opset: 17
+  parity_samples: 20
+  parity_tol: 1.0e-4
+
+paths:
+  best_ckpt: models/best.pt
+  onnx: models/model.onnx
+  mlruns: mlruns
+  eval_dir: reports
