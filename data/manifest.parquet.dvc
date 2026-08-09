@@ -1,0 +1,5 @@
+outs:
+- md5: ac2bb9c88368483e55a47e8d249aa0eb
+  size: 132976
+  hash: md5
+  path: manifest.parquet

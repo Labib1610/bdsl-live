@@ -1,0 +1,5 @@
+# Signer-disjoint splits for BdSLW60 (hand-written constant — do NOT derive).
+# Every one of the 18 signers appears in exactly one group.
+train:    [U1, U3, U4, U5, U6, U8, U9, U11, U12, U15]
+val:      [U2, U13]
+heldout:  [U10, U14, U16, U17, U18, U7]
