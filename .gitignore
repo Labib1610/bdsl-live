@@ -16,3 +16,7 @@ data/raw/
 # local artifacts
 mlruns/
 *.onnx
+
+# mediapipe task models (downloaded at setup)
+models/
+logs/
